@@ -60,7 +60,7 @@ public class GetAddressClient {
 
     /**
      * Lookup a postcode. Returns all available data if found. Returns 404 if
-     * postcode does not exist.
+     * postcode does not exist. Returns 401 if not authorized and make sure you don't go over your daily limit!
      *
      * @param postcode
      * @return
@@ -81,12 +81,31 @@ public class GetAddressClient {
         return processGetRequestAndReturnResponse(String.format(API.LOOKUP_POSTCODE_AND_HOUSE_NUMBER + START + API_KEY_QUERY, postcode, houseNumber, apiKey));
     }
     
+    /**
+     * Returns a list of postcodes - please NOTE: Bulk Requests are not allowed for the free plan or the second account plan. 
+     * You need a 2000 requests or 10000 requests plan in order to make bulk requests otherwise you get a 401 Unauthorized response
+     * @param postcodes
+     * @return
+     */
     public Response<List<PostcodeVO>> bulkLookupPostcodes(List<String> postcodes) {
-        return processGetRequestAndReturnResponse(String.format(API.API_ROOT_PATH 
-                + StringUtils.join(postcodes, ".") + START + API_KEY_QUERY, apiKey));
+        String url = String.format(API.BATCH_LOOKUP_POSTCODE 
+                + START + API_KEY_QUERY, StringUtils.join(postcodes, ","), apiKey);
+        AbstractRequestProcessor requestProcessor = new HttpRequestProcessor(url);
+
+        ResponseVO serverResponse = requestProcessor.processGetRequest();
+        
+        Response<List<PostcodeVO>> response = new Response<>();
+        if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
+            Gson gson = new Gson();
+            List<PostcodeVO> postcodeVOs = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<List<PostcodeVO>>() {
+            }.getType());
+            response.setData(postcodeVOs);
+        }
+        response.setStatus(serverResponse.getStatusCode());
+        return response;
     }
 
-    private <T> Response<T> processGetRequestAndReturnResponse(String url) {
+    private Response<PostcodeVO> processGetRequestAndReturnResponse(String url) {
         AbstractRequestProcessor requestProcessor = new HttpRequestProcessor(url);
 
         ResponseVO serverResponse = requestProcessor.processGetRequest();
@@ -94,11 +113,11 @@ public class GetAddressClient {
         return getResponseFromServerResponse(serverResponse);
     }
 
-    private <T> Response<T> getResponseFromServerResponse(ResponseVO serverResponse) {
-        Response<T> response = new Response<>();
+    private Response<PostcodeVO> getResponseFromServerResponse(ResponseVO serverResponse) {
+        Response<PostcodeVO> response = new Response<>();
         if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
             Gson gson = new Gson();
-            T postcodeVO = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<PostcodeVO>() {
+            PostcodeVO postcodeVO = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<PostcodeVO>() {
             }.getType());
             response.setData(postcodeVO);
         }
@@ -107,11 +126,11 @@ public class GetAddressClient {
     }
 
     public static void main(String[] args) {
-        GetAddressClient postcodesClient = new GetAddressClient("FIZi3Po-hUWhVbwUU7RRqg1715");
-        System.out.println(postcodesClient.lookupPostcode("SE61TZ"));
-        System.out.println(postcodesClient.lookupPostcode("SE61T"));
-        System.out.println(postcodesClient.lookupPostcodeAndHouseNumber("SE61TZ", 47));
+        GetAddressClient postcodesClient = new GetAddressClient("your-api-key");
+        System.out.println("1:" + postcodesClient.lookupPostcode("SE61TZ"));
+        System.out.println("2:" + postcodesClient.lookupPostcode("SE61T"));
+        System.out.println("3:" + postcodesClient.lookupPostcodeAndHouseNumber("SE61TZ", 43));
         System.out.println("***********************");
-        System.out.println(postcodesClient.bulkLookupPostcodes(Lists.newArrayList("SE61TZ", "E153BH")));
+        System.out.println("4:" + postcodesClient.bulkLookupPostcodes(Lists.newArrayList("SE61TZ", "W1j0DE")));
     }
 }

@@ -8,12 +8,15 @@ import org.apache.commons.lang3.StringUtils;
  */
 public final class GetAddressAPI {
 
-    private static final String GETADDRESS_IO_API_ROOT_PATH = "https://api.getAddress.io/v2/uk/";
+    private static final String GETADDRESS_IO_API_ROOT_PATH = "https://api.getAddress.io/v2/";
+    private static final String LOCATION = "uk/";
+    private static final String BATCH_PATH = "batch/";
 
     public final String API_ROOT_PATH;
 
     public String LOOKUP_POSTCODE;
     public String LOOKUP_POSTCODE_AND_HOUSE_NUMBER;
+    public String BATCH_LOOKUP_POSTCODE;
 
     /**
      *
@@ -43,7 +46,8 @@ public final class GetAddressAPI {
     }
     
     private void initAPI() {
-        LOOKUP_POSTCODE = GETADDRESS_IO_API_ROOT_PATH + "%s";
+        LOOKUP_POSTCODE = GETADDRESS_IO_API_ROOT_PATH + LOCATION + "%s";
         LOOKUP_POSTCODE_AND_HOUSE_NUMBER = LOOKUP_POSTCODE + "/%s";
+        BATCH_LOOKUP_POSTCODE = GETADDRESS_IO_API_ROOT_PATH + BATCH_PATH + LOCATION + "%s";
     }
 }
