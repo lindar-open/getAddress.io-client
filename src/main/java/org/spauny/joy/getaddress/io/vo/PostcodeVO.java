@@ -2,6 +2,7 @@ package org.spauny.joy.getaddress.io.vo;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -17,4 +18,6 @@ public class PostcodeVO implements Serializable {
     
     @SerializedName("Addresses")
     private List<String> addresses;
+    
+    private List<AddressVO> compiledAddresses = new ArrayList<>();
 }

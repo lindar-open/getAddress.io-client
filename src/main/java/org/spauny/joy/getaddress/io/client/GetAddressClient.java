@@ -1,11 +1,11 @@
 package org.spauny.joy.getaddress.io.client;
 
-import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.spauny.joy.getaddress.io.util.GetAddressAPI;
+import org.spauny.joy.getaddress.io.vo.AddressVO;
 import org.spauny.joy.getaddress.io.vo.PostcodeVO;
 import org.spauny.joy.getaddress.io.vo.Response;
 import org.spauny.joy.wellrested.request.AbstractRequestProcessor;
@@ -119,6 +119,22 @@ public class GetAddressClient {
             Gson gson = new Gson();
             PostcodeVO postcodeVO = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<PostcodeVO>() {
             }.getType());
+            for (String address : postcodeVO.getAddresses()) {
+                String[] addressComponents = address.split(",");
+                if (addressComponents.length != 7) {
+                    System.out.println("Address provided appear to be invalid. Please check with getAddress.io and try again");
+                    continue;
+                }
+                AddressVO addressVO = new AddressVO();
+                addressVO.setLine1(addressComponents[0]);
+                addressVO.setLine2(addressComponents[1]);
+                addressVO.setLine3(addressComponents[2]);
+                addressVO.setLine4(addressComponents[3]);
+                addressVO.setLocality(addressComponents[4]);
+                addressVO.setCity(addressComponents[5]);
+                addressVO.setCounty(addressComponents[6]);
+                postcodeVO.getCompiledAddresses().add(addressVO);
+            }
             response.setData(postcodeVO);
         }
         response.setStatus(serverResponse.getStatusCode());
@@ -128,9 +144,5 @@ public class GetAddressClient {
     public static void main(String[] args) {
         GetAddressClient postcodesClient = new GetAddressClient("your-api-key");
         System.out.println("1:" + postcodesClient.lookupPostcode("SE61TZ"));
-        System.out.println("2:" + postcodesClient.lookupPostcode("SE61T"));
-        System.out.println("3:" + postcodesClient.lookupPostcodeAndHouseNumber("SE61TZ", 43));
-        System.out.println("***********************");
-        System.out.println("4:" + postcodesClient.bulkLookupPostcodes(Lists.newArrayList("SE61TZ", "W1j0DE")));
     }
 }
