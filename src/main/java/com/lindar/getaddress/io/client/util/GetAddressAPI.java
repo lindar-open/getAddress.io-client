@@ -1,4 +1,4 @@
-package org.spauny.joy.getaddress.io.util;
+package com.lindar.getaddress.io.client.util;
 
 import org.apache.commons.lang3.StringUtils;
 

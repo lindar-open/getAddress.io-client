@@ -1,4 +1,4 @@
-package org.spauny.joy.getaddress.io.vo;
+package com.lindar.getaddress.io.client.vo;
 
 import java.io.Serializable;
 import lombok.Data;

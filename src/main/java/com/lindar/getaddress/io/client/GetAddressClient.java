@@ -1,16 +1,16 @@
-package org.spauny.joy.getaddress.io.client;
+package com.lindar.getaddress.io.client;
 
-import com.google.common.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
-import org.spauny.joy.getaddress.io.util.GetAddressAPI;
-import org.spauny.joy.getaddress.io.vo.AddressVO;
-import org.spauny.joy.getaddress.io.vo.PostcodeVO;
-import org.spauny.joy.getaddress.io.vo.Response;
+import com.lindar.getaddress.io.client.util.GetAddressAPI;
+import com.lindar.getaddress.io.client.vo.AddressVO;
+import com.lindar.getaddress.io.client.vo.PostcodeVO;
+import com.lindar.getaddress.io.client.vo.Response;
 import org.spauny.joy.wellrested.request.AbstractRequestProcessor;
 import org.spauny.joy.wellrested.request.HttpRequestProcessor;
-import org.spauny.joy.wellrested.vo.ResponseVO;
+import lindar.wellrested.vo.ResponseVO;
 
 /**
  *
