@@ -8,9 +8,8 @@ import com.lindar.getaddress.io.client.util.GetAddressAPI;
 import com.lindar.getaddress.io.client.vo.AddressVO;
 import com.lindar.getaddress.io.client.vo.PostcodeVO;
 import com.lindar.getaddress.io.client.vo.Response;
-import org.spauny.joy.wellrested.request.AbstractRequestProcessor;
-import org.spauny.joy.wellrested.request.HttpRequestProcessor;
-import lindar.wellrested.vo.ResponseVO;
+import com.lindar.wellrested.WellRestedRequest;
+import com.lindar.wellrested.vo.ResponseVO;
 
 /**
  *
@@ -90,9 +89,8 @@ public class GetAddressClient {
     public Response<List<PostcodeVO>> bulkLookupPostcodes(List<String> postcodes) {
         String url = String.format(API.BATCH_LOOKUP_POSTCODE 
                 + START + API_KEY_QUERY, StringUtils.join(postcodes, ","), apiKey);
-        AbstractRequestProcessor requestProcessor = new HttpRequestProcessor(url);
 
-        ResponseVO serverResponse = requestProcessor.processGetRequest();
+        ResponseVO serverResponse = WellRestedRequest.build(url).get();
         
         Response<List<PostcodeVO>> response = new Response<>();
         if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
@@ -106,9 +104,7 @@ public class GetAddressClient {
     }
 
     private Response<PostcodeVO> processGetRequestAndReturnResponse(String url) {
-        AbstractRequestProcessor requestProcessor = new HttpRequestProcessor(url);
-
-        ResponseVO serverResponse = requestProcessor.processGetRequest();
+        ResponseVO serverResponse = WellRestedRequest.build(url).get();
 
         return getResponseFromServerResponse(serverResponse);
     }
@@ -139,10 +135,5 @@ public class GetAddressClient {
         }
         response.setStatus(serverResponse.getStatusCode());
         return response;
-    }
-
-    public static void main(String[] args) {
-        GetAddressClient postcodesClient = new GetAddressClient("your-api-key");
-        System.out.println("1:" + postcodesClient.lookupPostcode("SE61TZ"));
     }
 }
