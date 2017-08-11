@@ -3,18 +3,15 @@ package com.lindar.getaddress.io.client;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
 import java.util.List;
+
+import com.lindar.wellrested.vo.WellRestedResponse;
 import org.apache.commons.lang3.StringUtils;
 import com.lindar.getaddress.io.client.util.GetAddressAPI;
 import com.lindar.getaddress.io.client.vo.AddressVO;
 import com.lindar.getaddress.io.client.vo.PostcodeVO;
 import com.lindar.getaddress.io.client.vo.Response;
 import com.lindar.wellrested.WellRestedRequest;
-import com.lindar.wellrested.vo.ResponseVO;
 
-/**
- *
- * @author iulian
- */
 public class GetAddressClient {
 
     public static final String START = "?";
@@ -90,7 +87,7 @@ public class GetAddressClient {
         String url = String.format(API.BATCH_LOOKUP_POSTCODE 
                 + START + API_KEY_QUERY, StringUtils.join(postcodes, ","), apiKey);
 
-        ResponseVO serverResponse = WellRestedRequest.build(url).get();
+        WellRestedResponse serverResponse = WellRestedRequest.build(url).get();
         
         Response<List<PostcodeVO>> response = new Response<>();
         if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
@@ -104,12 +101,12 @@ public class GetAddressClient {
     }
 
     private Response<PostcodeVO> processGetRequestAndReturnResponse(String url) {
-        ResponseVO serverResponse = WellRestedRequest.build(url).get();
+        WellRestedResponse serverResponse = WellRestedRequest.build(url).get();
 
         return getResponseFromServerResponse(serverResponse);
     }
 
-    private Response<PostcodeVO> getResponseFromServerResponse(ResponseVO serverResponse) {
+    private Response<PostcodeVO> getResponseFromServerResponse(WellRestedResponse serverResponse) {
         Response<PostcodeVO> response = new Response<>();
         if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
             Gson gson = new Gson();

@@ -13,3 +13,5 @@ hs_err_pid*
 /target/
 nb_jr_remoting.cfg
 nbactions.xml
+.idea/
+getaddress-io-client.iml

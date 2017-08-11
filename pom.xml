@@ -6,7 +6,7 @@
 
     <groupId>com.lindar</groupId>
     <artifactId>getaddress-io-client</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     
     <name>getAddress.io Java Client</name>
     
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>com.lindar</groupId>
             <artifactId>well-rested-client</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.0</version>
         </dependency>
         
         <dependency>
