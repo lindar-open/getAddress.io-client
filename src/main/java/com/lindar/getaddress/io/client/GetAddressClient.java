@@ -1,16 +1,16 @@
 package com.lindar.getaddress.io.client;
 
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.Gson;
-import java.util.List;
-
-import com.lindar.wellrested.vo.WellRestedResponse;
-import org.apache.commons.lang3.StringUtils;
+import com.google.gson.reflect.TypeToken;
 import com.lindar.getaddress.io.client.util.GetAddressAPI;
 import com.lindar.getaddress.io.client.vo.AddressVO;
 import com.lindar.getaddress.io.client.vo.PostcodeVO;
-import com.lindar.getaddress.io.client.vo.Response;
 import com.lindar.wellrested.WellRestedRequest;
+import com.lindar.wellrested.vo.Result;
+import com.lindar.wellrested.vo.WellRestedResponse;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 public class GetAddressClient {
 
@@ -61,7 +61,7 @@ public class GetAddressClient {
      * @param postcode
      * @return
      */
-    public Response<PostcodeVO> lookupPostcode(String postcode) {
+    public Result<PostcodeVO> lookupPostcode(String postcode) {
         return processGetRequestAndReturnResponse(String.format(API.LOOKUP_POSTCODE + START + API_KEY_QUERY, postcode, this.apiKey));
     }
 
@@ -73,7 +73,7 @@ public class GetAddressClient {
      * @param houseNumber
      * @return
      */
-    public Response<PostcodeVO> lookupPostcodeAndHouseNumber(String postcode, int houseNumber) {
+    public Result<PostcodeVO> lookupPostcodeAndHouseNumber(String postcode, int houseNumber) {
         return processGetRequestAndReturnResponse(String.format(API.LOOKUP_POSTCODE_AND_HOUSE_NUMBER + START + API_KEY_QUERY, postcode, houseNumber, apiKey));
     }
     
@@ -83,35 +83,35 @@ public class GetAddressClient {
      * @param postcodes
      * @return
      */
-    public Response<List<PostcodeVO>> bulkLookupPostcodes(List<String> postcodes) {
+    public Result<List<PostcodeVO>> bulkLookupPostcodes(List<String> postcodes) {
         String url = String.format(API.BATCH_LOOKUP_POSTCODE 
                 + START + API_KEY_QUERY, StringUtils.join(postcodes, ","), apiKey);
 
         WellRestedResponse serverResponse = WellRestedRequest.build(url).get();
-        
-        Response<List<PostcodeVO>> response = new Response<>();
-        if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
+
+        Result.ResultBuilder<List<PostcodeVO>> response = Result.builder();
+        if (serverResponse.isValid()) {
             Gson gson = new Gson();
             List<PostcodeVO> postcodeVOs = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<List<PostcodeVO>>() {
             }.getType());
-            response.setData(postcodeVOs);
+            response.data(postcodeVOs).success(true);
+        } else {
+            response.success(false);
         }
-        response.setStatus(serverResponse.getStatusCode());
-        return response;
+        return response.build();
     }
 
-    private Response<PostcodeVO> processGetRequestAndReturnResponse(String url) {
+    private Result<PostcodeVO> processGetRequestAndReturnResponse(String url) {
         WellRestedResponse serverResponse = WellRestedRequest.build(url).get();
 
         return getResponseFromServerResponse(serverResponse);
     }
 
-    private Response<PostcodeVO> getResponseFromServerResponse(WellRestedResponse serverResponse) {
-        Response<PostcodeVO> response = new Response<>();
-        if (StringUtils.isNotBlank(serverResponse.getServerResponse())) {
+    private Result<PostcodeVO> getResponseFromServerResponse(WellRestedResponse serverResponse) {
+        Result.ResultBuilder<PostcodeVO> response = Result.builder();
+        if (serverResponse.isValid()) {
             Gson gson = new Gson();
-            PostcodeVO postcodeVO = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<PostcodeVO>() {
-            }.getType());
+            PostcodeVO postcodeVO = gson.fromJson(serverResponse.getServerResponse(), new TypeToken<PostcodeVO>() {}.getType());
             for (String address : postcodeVO.getAddresses()) {
                 String[] addressComponents = address.split(",");
                 if (addressComponents.length != 7) {
@@ -128,9 +128,10 @@ public class GetAddressClient {
                 addressVO.setCounty(addressComponents[6]);
                 postcodeVO.getCompiledAddresses().add(addressVO);
             }
-            response.setData(postcodeVO);
+            response.data(postcodeVO).success(true).visible(false);
+        } else {
+            response.msg("Invalid or nonexistent postcode").success(false).visible(true);
         }
-        response.setStatus(serverResponse.getStatusCode());
-        return response;
+        return response.build();
     }
 }
