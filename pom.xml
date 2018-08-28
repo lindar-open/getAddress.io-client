@@ -52,7 +52,13 @@
         <dependency>
             <groupId>com.lindar</groupId>
             <artifactId>well-rested-client</artifactId>
-            <version>1.3.0</version>
+            <version>1.5.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lindar</groupId>
+            <artifactId>acolyte</artifactId>
+            <version>1.3.15</version>
         </dependency>
         
         <dependency>
@@ -68,6 +74,12 @@
             <version>1.3</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.10</version>
+        </dependency>
         
     </dependencies>
 
@@ -82,6 +94,8 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -96,6 +110,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
