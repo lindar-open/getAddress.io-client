@@ -23,9 +23,9 @@ public class UsageResource extends AbstractResource {
 
     public Result<UsageVO> findByDate(Date date){
         DateTime dateTime = new DateTime(date);
-        String day = dateTime.dayOfMonth().getAsText();
-        String month = dateTime.monthOfYear().getAsText();
-        String year = dateTime.year().getAsText();
+        String day = String.valueOf(dateTime.getDayOfMonth());
+        String month = String.valueOf(dateTime.getMonthOfYear());
+        String year = String.valueOf(dateTime.getYear());
         String url = UrlAcolyte.safeConcat(USAGE_ENDPOINT, day,month,year);
         return getRequest(url, new TypeToken<UsageVO>(){});
     }
