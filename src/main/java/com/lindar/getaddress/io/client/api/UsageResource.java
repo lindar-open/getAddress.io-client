@@ -5,8 +5,10 @@ import com.lindar.getaddress.io.client.util.GetAddressConfigs;
 import com.lindar.getaddress.io.client.vo.UsageVO;
 import com.lindar.wellrested.vo.Result;
 import lindar.acolyte.util.UrlAcolyte;
-import org.joda.time.DateTime;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class UsageResource extends AbstractResource {
@@ -17,17 +19,21 @@ public class UsageResource extends AbstractResource {
         super(getAddressConfigs);
     }
 
-    public Result<UsageVO> findTodays(){
-        return getRequest(USAGE_ENDPOINT, new TypeToken<UsageVO>(){});
+    public Result<UsageVO> findTodays() {
+        return getRequest(USAGE_ENDPOINT, new TypeToken<UsageVO>() {});
     }
 
-    public Result<UsageVO> findByDate(Date date){
-        DateTime dateTime = new DateTime(date);
+    public Result<UsageVO> findByDate(Date date) {
+        return findByDate(date.toInstant());
+    }
+
+    public Result<UsageVO> findByDate(Instant date) {
+        ZonedDateTime dateTime = ZonedDateTime.ofInstant(date, ZoneOffset.UTC);
         String day = String.valueOf(dateTime.getDayOfMonth());
-        String month = String.valueOf(dateTime.getMonthOfYear());
+        String month = String.valueOf(dateTime.getMonthValue());
         String year = String.valueOf(dateTime.getYear());
-        String url = UrlAcolyte.safeConcat(USAGE_ENDPOINT, day,month,year);
-        return getRequest(url, new TypeToken<UsageVO>(){});
+        String url = UrlAcolyte.safeConcat(USAGE_ENDPOINT, day, month, year);
+        return getRequest(url, new TypeToken<UsageVO>() {});
     }
 
 

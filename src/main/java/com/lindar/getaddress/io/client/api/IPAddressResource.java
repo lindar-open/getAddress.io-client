@@ -17,16 +17,16 @@ public class IPAddressResource extends AbstractResource {
         super(getAddressConfigs);
     }
 
-    public Result<List<IPAddressVO>> list(){
-        return getListRequest(IP_ADDRESS_ENDPOINT, new TypeToken<List<IPAddressVO>>(){});
+    public Result<List<IPAddressVO>> list() {
+        return getListRequest(IP_ADDRESS_ENDPOINT, new TypeToken<List<IPAddressVO>>() {});
     }
 
-    public Result<GetAddressResponse> add(IPAddressVO ipAddressVO){
+    public Result<GetAddressResponse> add(IPAddressVO ipAddressVO) {
         return postRequest(IP_ADDRESS_ENDPOINT, ipAddressVO);
     }
 
-    public Result<GetAddressResponse> delete(String id){
-        return deleteRequest(IP_ADDRESS_ENDPOINT,id);
+    public Result<GetAddressResponse> delete(String id) {
+        return deleteRequest(IP_ADDRESS_ENDPOINT, id);
     }
 
 }

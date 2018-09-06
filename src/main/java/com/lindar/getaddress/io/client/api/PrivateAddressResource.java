@@ -17,19 +17,19 @@ public class PrivateAddressResource extends AbstractResource {
         super(getAddressConfigs);
     }
 
-    public Result<List<PrivateAddressVO>> list(String postcode){
-     return getListRequest(createFullPath(postcode), new TypeToken<List<PrivateAddressVO>>(){});
+    public Result<List<PrivateAddressVO>> list(String postcode) {
+        return getListRequest(createFullPath(postcode), new TypeToken<List<PrivateAddressVO>>() {});
     }
 
-    public Result<GetAddressResponse> add(String postcode, PrivateAddressVO privateAddressVO){
+    public Result<GetAddressResponse> add(String postcode, PrivateAddressVO privateAddressVO) {
         return postRequest(createFullPath(postcode), privateAddressVO);
     }
 
-    public Result<GetAddressResponse> delete(String id,String postcode){
+    public Result<GetAddressResponse> delete(String id, String postcode) {
         return deleteRequest(createFullPath(postcode), id);
     }
 
-    private String createFullPath(String postcode){
-        return UrlAcolyte.safeConcat(PRIVATE_ADDRESS_ENDPOINT,postcode.replace(" ", ""));
+    private String createFullPath(String postcode) {
+        return UrlAcolyte.safeConcat(PRIVATE_ADDRESS_ENDPOINT, postcode.replaceAll(" ", ""));
     }
 }

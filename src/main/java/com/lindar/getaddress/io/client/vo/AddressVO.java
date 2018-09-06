@@ -1,12 +1,9 @@
 package com.lindar.getaddress.io.client.vo;
 
-import java.io.Serializable;
 import lombok.Data;
 
-/**
- *
- * @author iulian
- */
+import java.io.Serializable;
+
 @Data
 public class AddressVO implements Serializable {
     private static final long serialVersionUID = 18461328974512456L;

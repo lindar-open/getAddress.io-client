@@ -8,31 +8,31 @@ import com.lindar.getaddress.io.client.util.GetAddressConfigs;
 
 public class GetAddressAdminClient {
 
-    private DomainResource    domainResource;
-    private UsageResource     usageResource;
-    private IPAddressResource ipAddressResource;
+    private DomainResource         domainResource;
+    private UsageResource          usageResource;
+    private IPAddressResource      ipAddressResource;
     private PrivateAddressResource privateAddressResource;
 
-    public GetAddressAdminClient(GetAddressConfigs getAddressConfigs){
+    public GetAddressAdminClient(GetAddressConfigs getAddressConfigs) {
         domainResource = new DomainResource(getAddressConfigs);
         usageResource = new UsageResource(getAddressConfigs);
         ipAddressResource = new IPAddressResource(getAddressConfigs);
         privateAddressResource = new PrivateAddressResource(getAddressConfigs);
     }
 
-    public DomainResource domain(){
+    public DomainResource domain() {
         return domainResource;
     }
 
-    public UsageResource usage(){
+    public UsageResource usage() {
         return usageResource;
     }
 
-    public IPAddressResource ipAddress(){
+    public IPAddressResource ipAddress() {
         return ipAddressResource;
     }
 
-    public PrivateAddressResource privateAddress(){
+    public PrivateAddressResource privateAddress() {
         return privateAddressResource;
     }
 

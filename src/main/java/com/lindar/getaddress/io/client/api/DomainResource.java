@@ -16,16 +16,16 @@ public class DomainResource extends AbstractResource {
         super(getAddressConfigs);
     }
 
-    public Result<List<DomainVO>> list(){
-        return getListRequest(WHITE_LIST_ENDPOINT, new TypeToken<List<DomainVO>>(){});
+    public Result<List<DomainVO>> list() {
+        return getListRequest(WHITE_LIST_ENDPOINT, new TypeToken<List<DomainVO>>() {});
     }
 
-    public Result<GetAddressResponse> add(DomainVO domainVO){
+    public Result<GetAddressResponse> add(DomainVO domainVO) {
         return postRequest(WHITE_LIST_ENDPOINT, domainVO);
     }
 
-    public Result<GetAddressResponse> delete(String id){
-        return deleteRequest(WHITE_LIST_ENDPOINT,id);
+    public Result<GetAddressResponse> delete(String id) {
+        return deleteRequest(WHITE_LIST_ENDPOINT, id);
     }
 
 }

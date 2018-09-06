@@ -9,10 +9,12 @@ import com.lindar.wellrested.WellRestedRequest;
 import com.lindar.wellrested.vo.Result;
 import com.lindar.wellrested.vo.ResultBuilder;
 import com.lindar.wellrested.vo.WellRestedResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
+@Slf4j
 public class GetAddressClient {
 
     public static final String START = "?";
@@ -116,7 +118,7 @@ public class GetAddressClient {
             for (String address : postcodeVO.getAddresses()) {
                 String[] addressComponents = address.split(",");
                 if (addressComponents.length != 7) {
-                    System.out.println("Address provided appear to be invalid. Please check with getAddress.io and try again");
+                    log.warn("Address provided appear to be invalid. Please check with getAddress.io and try again");
                     continue;
                 }
                 AddressVO addressVO = new AddressVO();
