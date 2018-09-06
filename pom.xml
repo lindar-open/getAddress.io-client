@@ -4,7 +4,7 @@
 
     <groupId>com.lindar</groupId>
     <artifactId>getaddress-io-client</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     
     <name>getAddress.io Java Client</name>
     
@@ -38,7 +38,7 @@
         <connection>scm:git:git@github.com:lindar-open/getAddress.io-client.git</connection>
         <developerConnection>scm:git:git@github.com:lindar-open/getAddress.io-client.git</developerConnection>
         <url>https://github.com/lindar-open/getAddress.io-client.git</url>
-      <tag>1.0.3</tag>
+      <tag>HEAD</tag>
   </scm>
     
     <distributionManagement>
